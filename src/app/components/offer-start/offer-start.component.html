@@ -1,0 +1,4 @@
+<div *ngIf="types.length == 0">Loading types...</div>
+<ul *ngIf="types.length > 0">
+  <li *ngFor="let type of types" >{{type.id}} - <a [routerLink]="'/'+type.titleShort">{{type.titleShort}}</a></li>
+</ul>

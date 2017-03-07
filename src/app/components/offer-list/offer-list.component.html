@@ -1,0 +1,19 @@
+<h2 *ngIf="type">{{ type }}</h2>
+
+<div>
+  {{ offerType | json }}
+</div>
+
+<div *ngIf="offersLoaded == false">
+    Loading offers...
+</div>
+
+<div *ngIf="offersLoaded == true">
+    <ul *ngIf="offers.length > 0">
+        <li *ngFor="let offer of offers">{{offer.id}} - <a [routerLink]="'/'+offer.type+'/'+offer.titleShort">{{offer.title}}</a>
+        </li>
+    </ul>
+    <div *ngIf="offers.length == 0">
+        No offers to show
+    </div>
+</div>
