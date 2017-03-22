@@ -8,6 +8,7 @@ export class OffersService {
 
     private offerTypesObs = new ReplaySubject(1);
     private offerTypeObs = Object();
+    private offersObs = Object();
 
     constructor(private api: ESchoolApi, private config: Configuration) {
         config.username = 'J4xRL1jhKQDoSb1T-dbadmin';
@@ -48,8 +49,23 @@ export class OffersService {
         return this.offerTypeObs[type];
     }
 
-    getOffers(type: string) {
-        return this.api.eSchoolOffersGet(type);
+    getOffers(type: string, forceRefresh?: boolean) {
+
+        // If the Subject was NOT subscribed before OR if forceRefresh is requested
+        if (this.offersObs[type] == undefined || forceRefresh) {
+            this.offersObs[type] = new ReplaySubject(1);
+
+            this.api.eSchoolOffersGet(type).subscribe(
+                data => this.offersObs[type].next(data),
+                error => {
+                    this.offersObs[type].error(error);
+                    // Recreate the Observable as after Error we cannot emit data anymore
+                    this.offersObs[type] = new ReplaySubject(1);
+                }
+            );
+        }
+
+        return this.offersObs[type];
     }
 
     getOfferDetails(id: string) {

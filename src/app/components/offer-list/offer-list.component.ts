@@ -18,6 +18,8 @@ export class OfferListComponent implements OnInit {
     private type: string;
     private offerType: OfferType;
 
+    private showDeatil: string = null;
+
     constructor(private offerService:OffersService, private route: ActivatedRoute, private router: Router) {
     }
 

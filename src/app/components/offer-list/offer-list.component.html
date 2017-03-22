@@ -1,19 +1,21 @@
-<h2 *ngIf="type">{{ type }}</h2>
-
-<div>
-  {{ offerType | json }}
+<div *ngIf="!offersLoaded">
+    <md-progress-bar mode="indeterminate" color="accent"></md-progress-bar>
 </div>
 
-<div *ngIf="offersLoaded == false">
-    Loading offers...
-</div>
 
-<div *ngIf="offersLoaded == true">
-    <ul *ngIf="offers.length > 0">
-        <li *ngFor="let offer of offers">{{offer.id}} - <a [routerLink]="'/'+offer.type+'/'+offer.titleShort">{{offer.title}}</a>
-        </li>
-    </ul>
-    <div *ngIf="offers.length == 0">
-        No offers to show
-    </div>
-</div>
+<md-card class="example-card" *ngIf="offersLoaded">
+    <md-card-header>
+        <md-card-title>Offers {{type}}</md-card-title>
+    </md-card-header>
+    <md-card-content>
+        <md-list>
+            <md-list-item *ngFor="let offer of offers">
+                <button md-button [routerLink]="'/'+offer.type+'/'+offer.titleShort">{{offer.title}}</button>
+            </md-list-item>
+        </md-list>
+
+        <div *ngIf="offers.length == 0">
+            No offers to show
+        </div>
+    </md-card-content>
+</md-card>
